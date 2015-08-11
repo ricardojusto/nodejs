@@ -4,8 +4,22 @@
   <title>Page Title</title>
   <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
   <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-  <script src="http://cdn.jsdelivr.net/handlebarsjs/3.0.3/handlebars.amd.js"></script>
-  <script src="http:////cdn.jsdelivr.net/handlebarsjs/3.0.3/handlebars.amd.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
+  <script type="text/javascript">
+
+var counter = 1;
+
+$(document).ready(function() {
+
+  $("#addMe").click(function(){
+    counter++;
+
+    $(".theCount").last().text(counter);
+  });
+
+});
+</script>
 </head>
 <body>
 
@@ -15,7 +29,7 @@
         <h1>Please add your chapter here!</h1>
         <form  action="<%= course_chapters_path({course_id: @course.id}) %>" method="post">
           <div id="chapter-form">
-            <h5> Chapter Number {{ content }} </h5>
+            <h5> Chapter Number <span class="theCount">1</span> </h5>
             <input type="text" name="chapter_name[]" placeholder="Chapter Name" class="col s6">
             <div class="row">
               <textarea name="chapter_description[]" placeholder="Chapter Description" class="materialize-textarea"></textarea>
@@ -24,15 +38,15 @@
           <input id="form-btn" type="submit" name"Submit" class="btn">
         </form>
         <div><br>
-          <button  class="add_field_button btn"> Add Another Chapter</button>
+          <button id="addMe" class="add_field_button btn"> Add Another Chapter</button>
         </div>
         <!-- Hidden Form to clone with jquery -->
         <div hidden>
           <form id="chapter-form" action="<%= new_course_chapter_path(@course) %>" method="post">
             <div id="input-field">
-              <script id="handlebar" type="text/x-handlebars-template">​
-              <h5 id="counterForChapters"> Chapter Number {{ content }} </h5>
-              </script>
+
+              <h5> Chapter Number <span class="theCount">1</span> </h5>
+
               <input type="text" name="chapter_name[]" placeholder="Chapter Name" class="input-field col s6">
               <div class="row">
                 <textarea name="chapter_description[]" placeholder="Chapter Description" class="materialize-textarea"></textarea>
@@ -47,25 +61,39 @@
 
 </body>
 
-<table>
-    <tr>
-        <th>Band Name</th>
-        <th>Date</th>
-        <th>Album Name</th>
-    </tr>
-    {{#each Bands}}
-        <tr>
-            <td>{{Name}}</td>
-            <td>{{Date}}</td>
-            <td>{{Albums.0.Name}}</td>
-        </tr>
-    {{/each}}
-</table>
 
-<!-- template -->
-<script>​
 
-​</script>
+<!--This is our template. -->
+<!--Data will be inserted in its according place, replacing the brackets.-->
+<script id="address-template" type="text/x-handlebars-template">
+  <p>You can find me in {{city}}. My address is {{number}} {{street}}.</p>
+</script>
+
+<!--Your new content will be displayed in here-->
+<div class="content-placeholder"></div>
+
+<script>
+  $(function () {
+  // Grab the template script
+  var theTemplateScript = $("#address-template").html();
+
+  // Compile the template
+  var theTemplate = Handlebars.compile(theTemplateScript);
+
+  // Define our data object
+  var context={
+    "city": "London",
+    "street": "Baker Street",
+    "number": "221B"
+  };
+
+  // Pass our data to the template
+  var theCompiledHtml = theTemplate(context);
+
+  // Add the compiled html to the page
+  $('.content-placeholder').html(theCompiledHtml);
+});
+</script>
 
 
 
@@ -88,5 +116,7 @@ $(function() {
   });
 });
 </script>
+
+
 
 </html>

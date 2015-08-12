@@ -28,7 +28,7 @@ ProductList.prototype.filterByBrand = function(brand) {
     return item.brand === brand;
  });
 };
- 
+
 ProductList.prototype.countByBrand = function(brand) {
   return this.products.filter(function(item){
     return item.brand === brand;

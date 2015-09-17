@@ -41,6 +41,10 @@ function storeCart(){
 function CartCtrl(Store){
   var ctrl = this;
   ctrl.items = Store.cart.items;
+  ctrl.store = Store;
+  ctrl.remove = function(item){
+    Store.removeProductFromCart(item);
+  };
 }
 
 function Store(){
@@ -78,20 +82,27 @@ function Store(){
   Cart.prototype.getItems = function(){
     return this.items;
   };
+
   Cart.prototype.add = function(product){
+    var index = this.items.indexOf(product);
+    if(index > -1){
+      this.items[index].quantity += 1;
+    } else {
      this.items.push(product);
+    }
   };
+
   Cart.prototype.remove = function(product){
      this.items.splice(this.items.indexOf(product), 1);
   };
   Cart.prototype.getTotal = function(){
      return this.items.reduce(function(total, item){
-      return total += item.price;
+      return total += item.price * item.quantity;
      }, 0);
   };
 return new Store([
-  { name: "Apples", price: 0.20},
-  { name: "Oranges", price: 0.43},
-  { name: "Bananas", price: 0.66}
+  { name: "Apples", price: 0.20, quantity: 1},
+  { name: "Oranges", price: 0.43, quantity: 1},
+  { name: "Bananas", price: 0.66, quantity: 1}
   ]);
 }

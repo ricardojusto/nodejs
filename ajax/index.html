@@ -1,0 +1,10 @@
+<script type="text/javascript">
+var myAjaxRequest = new XMLHttpRequest();
+myAjaxRequest.onreadystatechange = function() {
+  if (myAjaxRequest.readyState === 4 && myAjaxRequest.status === 200) {
+  document.getElementById('someId').innerHTML = myAjaxRequest.responseText;
+  }
+};
+myAjaxRequest.open('GET', 'sidebar.html');//method + url
+myAjaxRequest.send();
+</script>
